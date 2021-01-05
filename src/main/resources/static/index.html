@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notepad App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<div id="vue">
+
+    <header class="text-center container">
+        <h1>
+            NotepadApp
+            <small class="text-muted">With SpringBoot and Vue.js</small>
+        </h1>
+    </header>
+
+
+    <div class="py-5 text-center container">
+
+        <!--    ADD -->
+
+
+        <div v-if="!isEditing">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <form v-on:submit.prevent="postNote" class="form-inline">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon3">Title:</span>
+                            <input type="text" class="form-control" v-model="notepad.title" id="basic-url"
+                                   aria-describedby="basic-addon3" required maxlength="50">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text" style="height: 100px">Note: </span>
+                            <textarea class="form-control" v-model="notepad.text" aria-label="With textarea"
+                                      required maxlength="205"></textarea>
+                        </div>
+                        <p>
+                            <button type="submit" class="btn btn-primary my-2">Add New Note</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!--    EDIT -->
+
+        <div v-else-if="isEditing">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <form v-on:submit.prevent="editNote" class="form-inline">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon3">Title:</span>
+                            <input type="text" class="form-control" v-model="notepad.title" id="basic-url"
+                                   aria-describedby="basic-addon3" required maxlength="50">>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text" style="height: 100px">Note: </span>
+                            <textarea class="form-control" v-model="notepad.text" aria-label="With textarea"
+                                      required maxlength="205">></textarea>
+                        </div>
+                        <p>
+                            <button type="submit" class="btn btn-primary my-2">Save</button>
+                            <button type="button" v-on:click="exitEditMode" class="btn btn-danger my-2">Cancel</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    Notes list-->
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+
+                <div v-for="note in notepads" v-bind:key="note.id" class="col">
+                    <div class="card text-dark bg-warning mb-3">
+                        <div class="card-header">{{note.title}}</div>
+                        <div class="card-body">
+                            <p class="card-text">{{note.text}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" v-on:click="setNoteToEdit(note)"
+                                            class="btn btn-sm btn-outline-secondary">Edit
+                                    </button>
+                                    <button type="button" v-on:click="deleteNote(note.id)"
+                                            class="btn btn-sm btn-outline-secondary">Delete
+                                    </button>
+                                </div>
+                                <small class="text-muted">{{note.date}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<footer class="text-muted py-5">
+    <div class="container">
+        <p class="float-end mb-1">
+            <a href="#">Back to top</a>
+        </p>
+        <p class="mb-1">Full-stack CRUD Example with SpringBoot Restful Api, Hibernate, Lombok, VueJS, Axios and
+            Boostrap</p>
+        <p class="mb-0">JaneckN <a href="https://github.com/JaneckN">GitHub</a>.</p>
+    </div>
+</footer>
+
+<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
+
+<script>
+    const apiURL = "http://localhost:8080/api/notepad/";
+
+
+    new Vue({
+        el: "#vue",
+        data() {
+            return {
+                isEditing: false,
+                notepad: {
+                    id: null,
+                    title: null,
+                    text: null,
+                    date: null,
+                },
+                notepads: null,
+            }
+        },
+
+        mounted() {
+            this.getNotes();
+        },
+
+
+        methods: {
+
+            getNotes: function () {
+                axios.get(apiURL).then((res) => {
+                    this.notepads = res.data;
+                });
+            },
+
+
+            postNote: function () {
+                axios
+                    .post(apiURL, {
+                        "title": this.notepad.title,
+                        "text": this.notepad.text,
+                    }).then((res) => {
+                    console.log(res.data);
+                    this.getNotes();
+                    this.isEditing = false;
+                    this.notepad.id = null;
+                    this.notepad.title = null;
+                    this.notepad.text = null;
+                    this.notepad.date = null;                });
+            },
+
+            deleteNote: function (id) {
+                axios.delete(apiURL + id).then((res) => {
+                    console.log(res.data);
+                    this.getNotes();
+                    this.notepad.id = null;
+                    this.notepad.title = null;
+                    this.notepad.text = null;
+                    this.notepad.date = null;
+                });
+            },
+
+            setNoteToEdit: function (notepad) {
+                this.isEditing = true;
+                this.notepad = notepad;
+
+            },
+
+            exitEditMode: function () {
+                this.isEditing = false;
+                this.notepad.title = null;
+                this.notepad.text = null;
+                this.getNotes();
+
+            },
+
+
+            editNote: function () {
+                axios
+                    .put(apiURL, {
+                        "id": this.notepad.id,
+                        "title": this.notepad.title,
+                        "text": this.notepad.text,
+                        "date": this.notepad.date,
+                    }).then((res) => {
+                    console.log(res.data);
+                    this.isEditing = false;
+                    this.notepad.id = null;
+                    this.notepad.title = null;
+                    this.notepad.text = null;
+                    this.notepad.date = null;
+                    this.getNotes();
+
+
+                });
+            },
+        },
+    });
+
+
+</script>
+
+
+
+
+
