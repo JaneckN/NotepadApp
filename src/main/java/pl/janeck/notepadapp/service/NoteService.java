@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @Service
 public class NoteService {
-
     private NoteRepository noteRepository;
 
     @Autowired
@@ -51,12 +50,12 @@ public class NoteService {
     }
 
 
+
     public Optional<Note> update(Note noteToUpdate) {
         Optional<Note> note = getNoteById(noteToUpdate.getId());
         if (note.isPresent()) {
-            noteRepository.save(noteToUpdate);
-            return Optional.of(noteToUpdate);
-
+            Note updated = noteRepository.save(noteToUpdate);
+            return Optional.of(updated);
         }
         return Optional.empty();
     }
