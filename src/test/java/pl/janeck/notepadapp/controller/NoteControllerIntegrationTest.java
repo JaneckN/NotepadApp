@@ -102,6 +102,7 @@ class NoteControllerIntegrationTest {
 
     @Test
     void should_add_note() {
+        
     }
 
     @Test

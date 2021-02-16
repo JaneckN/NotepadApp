@@ -10,5 +10,7 @@
 ![alt text](https://i.ibb.co/KWkQNpK/notepadapp.png)
 
 
+[![Visits Badge](https://badges.pufler.dev/visits/JaneckN/NotepadApp)](https://badges.pufler.dev)
+
 
 
