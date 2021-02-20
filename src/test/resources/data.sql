@@ -1,0 +1,2 @@
+INSERT INTO notes (title, text, date) VALUES ('Test note title #1', 'Test note text #1', '2021-02-17T22:04:48.797');
+INSERT INTO notes (title, text, date) VALUES ('Test note title #2', 'Test note text #2', '2020-07-30T07:22:33.797');
