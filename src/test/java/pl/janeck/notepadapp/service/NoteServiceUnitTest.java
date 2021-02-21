@@ -40,6 +40,8 @@ class NoteServiceUnitTest {
 
     @Test
     void get_All_Notes() {
+
+        // given
         List<Note> testNoteList = new ArrayList<>();
         Note note1 = new Note("Test note title #1", "Test note text #1", LocalDateTime.of(2020, 5, 15, 10, 17, 7));
         Note note2 = new Note("Test note title #2", "Test note text #2", LocalDateTime.of(2020, 7, 27, 13, 33, 17));
@@ -47,10 +49,10 @@ class NoteServiceUnitTest {
         note2.setId(2L);
         testNoteList.add(note1);
         testNoteList.add(note2);
+
+        //When & Then
         Mockito.when(noteRepository.findAll()).thenReturn(testNoteList);
-
         List<Note> allNotes = noteService.getAllNotes();
-
         Assertions.assertEquals("Test note title #1", allNotes.get(0).getTitle());
         Assertions.assertEquals("Test note text #2", allNotes.get(1).getText());
         Assertions.assertEquals(LocalDateTime.of(2020, 7, 27, 13, 33, 17), allNotes.get(1).getDate());
@@ -59,13 +61,14 @@ class NoteServiceUnitTest {
 
     @Test
     void get_Note_ById() {
+        // given
         Note note1 = new Note("Test note title #1", "Test note text #1", LocalDateTime.of(2020, 5, 15, 10, 17, 7));
         note1.setId(1L);
 
+
+        //When & Then
         Mockito.when(noteRepository.findById(1L)).thenReturn(Optional.of(note1));
-
         Optional<Note> note = noteService.getNoteById(1L);
-
         Assertions.assertEquals(1L, note.get().getId());
 
     }
@@ -73,13 +76,13 @@ class NoteServiceUnitTest {
     @Test
     void add_Note() {
 
+        // given
         Note note2 = new Note("Test note title #2", "Test note text #2", LocalDateTime.of(2020, 7, 27, 13, 33, 17));
         note2.setId(2L);
 
+        //When & Then
         Mockito.when(noteRepository.save(any(Note.class))).thenReturn(note2);
-
         Optional<Note> created = noteService.addNote(note2);
-
         Assertions.assertSame(note2, created.get());
 
     }
@@ -87,22 +90,24 @@ class NoteServiceUnitTest {
     @Test
     void remove_Note() {
 
+        // given
         Note note1 = new Note("Test note title #1", "Test note text #1", LocalDateTime.of(2020, 5, 15, 10, 17, 7));
         note1.setId(1L);
 
-
+        //When & Then
         Mockito.when(noteRepository.findById(note1.getId())).thenReturn(Optional.of(note1));
         noteService.removeNote(note1.getId());
-
         Mockito.verify(noteRepository).deleteById(note1.getId());
     }
 
     @Test
     void update_Note() {
 
+        // given
         Note noteToUpdate = new Note("Test note title - before update", "Test note text - before update", LocalDateTime.of(2020, 8, 29, 2, 13, 57));
         noteToUpdate.setId(3L);
 
+        //When & Then
         Mockito.when(noteRepository.findById(noteToUpdate.getId())).thenReturn(Optional.of(noteToUpdate));
         Mockito.when(noteRepository.save(any(Note.class))).thenReturn(noteToUpdate);
 
