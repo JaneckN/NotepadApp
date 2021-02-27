@@ -13,7 +13,7 @@
 
 NotepadApp is my another CRUD application, where You can add, edit and remove notes. Spring-Boot and Hibernate
 with remote MySQL database on the backend, and Vue.js and bootstrap on the frontend. I start to write unit
-and integration tests for this project - but I know it is still a lot to improve, I'm still learning testing :)
+and integration tests for this project. I still develop my testing skills
 
 
 <br/>
