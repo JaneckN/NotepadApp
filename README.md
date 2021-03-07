@@ -18,10 +18,12 @@ and integration tests for this project. I still develop my testing skills
 
 <br/>
 <br/>
-:point_right: To Try this app go to : https://notepadapp-springboot-vue.herokuapp.com/   :point_left:
+
+<h1 align="center"> To get live demo links , please drop me an email on:</h1> 
+<p align="center"> <a href="mailto:janeck@protonmail.com">
+<img src="https://img.shields.io/badge/ProtonMail-8B89CC?style=for-the-badge&logo=protonmail&logoColor=white"/></a>
 <br/>
 <br/>
-
-
-
-![alt text](https://i.ibb.co/KWkQNpK/notepadapp.png)
+<img src="https://i.ibb.co/KWkQNpK/notepadapp.png">
+<br/>
+</p>
