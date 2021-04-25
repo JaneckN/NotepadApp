@@ -18,7 +18,7 @@ import java.util.Optional;
  */
 
 @RestController
-@RequestMapping(("/api/notepad"))
+@RequestMapping("/api/notepad")
 public class NoteController {
 
 
